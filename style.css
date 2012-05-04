@@ -1,0 +1,169 @@
+body {font-family: sans-serif; font-size: 18px; margin: 0; padding: 0; background: #99cc99; background-position: center;}
+
+/* Rounds*/
+
+#header {position:absolute; z-index:2; top:0; left:0; width:100%;  box-shadow: 1px 1px 3px rgba(0,0,0,0.6); -webkit-box-shadow: 1px 1px 3px rgba(0,0,0,0.6);}
+
+.turnkeeper {background: #000; color: #fff; overflow: hidden; padding: .5em; }
+
+
+
+.roundheader {float: left; margin: 0; padding: .75em .25em .75em .5em; color: #999;}
+
+.roundcounter {list-style: none; margin: 0; padding: .25em; float: left;}
+.roundcounter li {display: block; float: left; margin: 0; padding: 0;}
+.roundcounter li span {display: block; margin-right: .25em;  background: #666; padding: .5em .5em; border-radius: 3px;}
+
+.roundcounter .harvest {border-right: .25em solid #ffff99; margin-right: .25em;}
+
+.roundcounter li.currentround span {background: #ccc; color: #000;}
+
+.replenish {float: right; background: #ffff99; margin: .25em .5em; display: block; border-radius: 6px; padding: .5em .75em; color: #000;  cursor: pointer;}
+
+/* Players*/
+
+
+#footer {position:absolute; z-index:2; bottom:0; left:0; width:100%;  box-shadow: 1px 1px 3px rgba(0,0,0,0.6); -webkit-box-shadow: 1px 1px 3px rgba(0,0,0,0.6);}
+
+.players {background: #000; color: #fff; overflow: hidden; padding: .5em;}
+
+.playersheader {float: left; margin: 0; padding: .75em .25em .75em .5em; color: #999;}
+
+
+.moves {list-style: none; margin: 0; padding: .25em; float: left;}
+.moves li {border: .2em solid #000; display: block;  float: left; background: #000; padding: .125em; margin: 0; border-radius: 1em;}
+.moves li span {display: block;  width: 1.5em; height: 1.5em; background: #fff; border-radius: 1em;}
+.moves li span span {display: none;}
+
+.moves li.current {border-color: #ccc;}
+
+
+.moves li.red span {background: #993333;}
+.moves li.blue span {background: #3333cc;}
+.moves li.green span {background: #393;}
+.moves li.purple span {background: #996699;}
+.moves li.white span {background: #fff;}
+
+.playerlabel {float: right; padding: .5em .75em; margin: 0;}
+
+
+
+
+#undo  {margin-left: .5em; float: right; display: block; border-radius: 6px; padding: .5em .75em; color: #666; border: 1px solid #666;}
+
+#undo.available {background: #993333; color: #000;  cursor: pointer; border: 1px solid #993333;} 
+
+
+
+
+/* Action Cards*/
+
+.storage {display: none;}
+
+#wrapper { position:absolute; z-index:1; top:0; bottom: 0; left:0; width:100%; overflow:auto; }
+
+.content {padding: .25em;}
+
+.action { padding: .5em .75em; border-radius: 6px; overflow: hidden; width: 288px; float: left; margin: .25em; text-align: center; }
+.action em {font-size: 14px; padding: .5em; display: block;}
+.action span {font-size: 14px; padding: .5em; display: block;}	
+
+
+
+#wrapper .available {background: #336633;  border: 1px solid #336633; cursor: pointer; color: white;  box-shadow: 1px 1px 3px rgba(0,0,0,0.6); -webkit-box-shadow: 1px 1px 3px rgba(0,0,0,0.6); text-shadow: 1px 1px 3px rgba(0,0,0,0.6);}
+#wrapper .new {background: #339933; color: #fff; border: 1px solid #339933;}
+#wrapper .unavailable {background: transparent !important; color: #669966 !important;  border: 1px dashed #669966 !important; }
+
+.wood .inventory li { background: #666600; border-radius: .5em; border: 1px solid #666600; }
+.reed .inventory li { background: #fff; border-radius: .5em; border: 1px solid #fff; }
+.clay .inventory li { background: #993333; border-radius: .5em; border: 1px solid #993333; }
+.stone .inventory li { background: #333333; border-radius: .5em; border: 1px solid #333333; }
+.food .inventory li { background: #ffff99; border-radius: .5em; border: 1px solid #ffff99; }
+
+.boar .inventory li { background: #333333; border: 1px solid #333333; }
+.sheep .inventory li { background: #fff; border: 1px solid #fff; }
+.cattle .inventory li { background: #666600; border: 1px solid #666600; }
+
+
+.unavailable .inventory li {background: transparent; border: 1px dashed #669966; box-shadow: none;  -webkit-box-shadow: none;}
+
+#wrapper .undoable {border: 1px solid #669966 !important; cursor: pointer;}
+#wrapper .undoable .inventory li { border: 1px solid #669966;}
+
+.inventory {list-style: none; margin: .5em 0 0 0; padding-left: 0;}
+.inventory li {display: block;  width: 1em; height: 1em; margin: 3px; float: left; box-shadow: 1px 1px 3px rgba(0,0,0,0.6); -webkit-box-shadow: 1px 1px 3px rgba(0,0,0,0.6);}
+.inventory li span {display: none;}
+
+
+
+.popup {display: none; background: rgba(0,0,0,0.8);}
+.popup .shade {background: rgba(0,0,0,0.8); z-index: 10;}
+.popup .modal { background: #000; color: #fff; width: 400px; border: 6px solid #000; margin: auto; z-index: 11; -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; }
+.popup .modalheader { overflow: hidden; padding: .5em; clear: both;}
+.popup .modalheader .cancel {float: right; border: 1px solid #993333; margin: 0; display: block; border-radius: 6px; padding: .5em .75em;  background: #993333; color: #000; cursor: pointer;}
+.popup h4 {font-weight: lighter; color: #ccc; margin: 1em .5em 0 .5em; font-size: 18px; clear: both;}
+
+#cardswindow ul {list-style: none; margin: 0; padding: .25em; float: left;}
+#cardswindow ul li {border: .2em solid #000; display: block;  float: left; background: #000; padding: .125em; margin: 0; border-radius: 1em;}
+#cardswindow ul li span {display: block;  width: 1.5em; height: 1.5em; background: #fff; border-radius: 1em;}
+#cardswindow ul li span span {display: none;}
+#cardswindow ul li span:hover {cursor: pointer;}
+
+#cardswindow .cardsplayer {overflow: hidden;}
+
+#cardswindow ul li.selected {border-color: #ccc;}
+
+#cardswindow ul li.red span {background: #993333;}
+#cardswindow ul li.blue span {background: #3333cc;}
+#cardswindow ul li.green span {background: #393;}
+#cardswindow ul li.purple span {background: #996699;}
+#cardswindow ul li.white span {background: #fff;}
+
+#cardswindow a.card {clear: both; -webkit-border-radius: 8px; -moz-border-radius: 8px; boder-radius: 8px; border: 1px solid #ffff99; background: #ffff99; color: #000; margin: .25em .5em; padding: .5em .5em; display: block;}
+#cardswindow a.card:hover {cursor: pointer;}
+
+/* Here there be conflicts */
+
+#skipplayer {border: 1px solid #666; background: #000; color: #666; float: right; margin: 0; display: block; border-radius: 6px; padding: .5em .75em;  }
+
+#skipplayer.available { background: #393; border-color: #393; color: #000; cursor: pointer;}
+
+#cardsbutton {border: 1px solid #ffff99; float: right; margin: 0 .5em 0 0; display: none; border-radius: 6px; padding: .5em .75em;  background: #ffff99; color: #000; cursor: pointer;}
+
+
+/* Welcome Screen*/
+
+
+#welcomescreen {background: #000; color: #ffff99; z-index: 100;}
+.settings {margin: auto; overflow: hidden; padding: 2em;}
+
+.playersettings p {clear: both; float: left;  padding: .3em .6em; margin: .5em 0; width: 150px;}
+
+.playerselect {list-style: none; margin: 0; padding: .25em; float: left;}
+.playerselect li {border: .2em solid #000; display: block;  float: left; background: #000; padding: .125em; margin: 0; border-radius: 1em;}
+.playerselect li span {display: block;  width: 1.5em; height: 1.5em; background: #fff; border-radius: 1em;}
+.playerselect li span span {display: none;}
+
+.playerselect li.selected {border-color: #ccc;}
+
+
+.playerselect li.red span {background: #993333;}
+.playerselect li.blue span {background: #3333cc;}
+.playerselect li.green span {background: #393;}
+.playerselect li.purple span {background: #996699;}
+.playerselect li.white span {background: #fff;}
+
+.deckswitch {clear: both;}
+.deckswitch span { display: block; float: left; padding: .3em .6em; margin: .5em 0; width: 150px;}
+.deckswitch a { display: block; float: left; padding: .3em .6em; margin: .5em 0; border: .2em solid #000; -webkit-border-radius: 12px; -moz-border-radius: 12px; border-radius: 12px;}
+.deckswitch a:hover {cursor: pointer;}
+.deckswitch a.selected {border-color: #ccc;}
+
+.familystyle {clear: both;}
+.familystyle span { display: block; float: left; padding: .3em .6em; margin: .5em 0; width: 150px;}
+.familystyle a { display: block; float: left; padding: .3em .6em; margin: .5em 0; border: .2em solid #000; -webkit-border-radius: 12px; -moz-border-radius: 12px; border-radius: 12px;}
+.familystyle a:hover {cursor: pointer;}
+.familystyle a.selected {border-color: #ccc;}
+
+.startgame {clear: both; background: #363; cursor: pointer; color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.6); border-radius: 6px;  padding: .7em; width: 66px; text-align: center; margin: 5em 0;}
+
