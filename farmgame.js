@@ -8,6 +8,8 @@
  *
  * Bugs
  *
+ * Last action of round is not undoable from re-clicking, only from undo button
+ *
  * Functionality
  * - Cards which award resources on rounds
  *
@@ -31,14 +33,17 @@ if (isiPad) {
 	document.addEventListener('DOMContentLoaded', loaded, false);
 }
 
-
+// Array Remove - By John Resig (MIT Licensed)
+Array.prototype.remove = function(from, to) {
+  var rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  return this.push.apply(this, rest);
+};
 
 var decks = {
 	familydeck : { 
 		nicename : "Family", 
-		slug : "familydeck", 
-		occupations : Array(),
-		improvements : Array()
+		slug : "familydeck" 
 		},
 	edeck : { 
 		selected : true,
@@ -67,11 +72,12 @@ $(document).ready(function(){
 	// Global Variables
 
 	var players = Array(
-		Array('Red','red',2,0),
-		Array('Blue','blue',2,0),
-		Array('Green','green',2,0),
-		Array('Purple','purple',2,0),
-		Array('Natural Wood','white',2,0)
+		// 0: Nicename, 1: Slug, 2: Tokens, 3: Children, 4: Cards, 5: Guests
+		Array('Red','red',2,0,Array(),0),
+		Array('Blue','blue',2,0,Array(),0),
+		Array('Green','green',2,0,Array(),0),
+		Array('Purple','purple',2,0,Array(),0),
+		Array('Natural Wood','white',2,0,Array(),0)
 		);
 
 	var activePlayers = Array();
@@ -226,11 +232,13 @@ $(document).ready(function(){
 	}
 
 	function undoAction() {
-			if ( $(lastAction).hasClass('startingplayer') ) {
-				changeStartingPlayer('undo');			
-			} else if ( $(lastAction).hasClass('familygrowth') ) {
-				familyGrowth('undo');			
-			}
+			if ( $(lastAction).hasClass('startingplayer') ) changeStartingPlayer('undo');			
+			if ( $(lastAction).hasClass('familygrowth') ) familyGrowth('undo');
+			
+			$(lastAction).removeClass('keep1');
+			$(lastAction).removeClass('keep2');
+			$(lastAction).removeClass('keep3');
+			$(lastAction).removeClass('keep4');
 
 			updateMoves('prev');
 
@@ -312,11 +320,51 @@ $(document).ready(function(){
 
 	}
 
+	// HELPERS
+
+	function doWetNurse() {
+
+		var answer = confirm('Wet Nurse: Click "OK" to Family Growth.');
+
+		if (answer) {
+
+			var currentToken = currentTurn - 1;			
+			var growingFamily = turns[currentToken];
+
+			doFamilyGrowth(growingFamily);
+			doWetNurse();
+		} 
+		
+	}
+
+	function doFamilyGrowth( growingFamily ) {
+		// Used by lover, reedhut, familyGrowth
+		if ( growingFamily[2] < maxFamily ) {
+			growingFamily[2] ++;
+			growingFamily[3] ++;
+			console.log( growingFamily[0] + ' grew their family' );
+		} else {
+			console.log( growingFamily[0] + ' has the maximum family' );
+		}
+	}
+
+
+	function doGuest(theplayer) {
+		// Used by guest, reedhut
+
+		console.log('theplayer: ' + theplayer);
+
+		$('.moves').append('<li class="' + theplayer[1] + '"><span><span>' + theplayer[0] + '</span></span></li>')
+		turns.push(theplayer);
+		theplayer[5]++;
+		console.log(theplayer[0] + " guests: " + theplayer[5]);
+	}
+
+
 	function familyGrowth(undoGrowth) {
 	
 		console.log('family growth function');
 	
-		if ( currentRound > 4) {
 
 			if ( undoGrowth == 'undo' ) {
 
@@ -331,16 +379,9 @@ $(document).ready(function(){
 				var currentToken = currentTurn - 1;			
 				var growingFamily = turns[currentToken];
 
-				if ( growingFamily[2] < maxFamily ) {
-					growingFamily[2] ++;
-					growingFamily[3] ++;
-				} else {
-					//console.log( growingFamily[0] + ' has the maximum family' );
-				}
+				doFamilyGrowth(growingFamily);
 
 			}
-
-		}
 
 		//console.log( growingFamily[0] + ' children: ' + growingFamily[2] );
 	
@@ -363,6 +404,9 @@ $(document).ready(function(){
 					$('#card' + cardStack[i] ).removeClass('new');
 					$('#card' + cardStack[i] ).changeAvailability('available');
 				}
+
+				$('.content .improvement').changeAvailability('available');
+				$('.content .occupation').changeAvailability('available');				
 		
 				$('#card' + cardStack[thisround] ).prependTo('.content').changeAvailability('available');
 				$('#card' + cardStack[thisround] ).addClass('new');
@@ -370,7 +414,8 @@ $(document).ready(function(){
 			}
 
 		function setTurns() {
-	
+			turns = [];
+//			console.log('turns length: ' + turns.length);
 			var activeTokens = 	function() {
 			
 					var count = 0;
@@ -387,7 +432,6 @@ $(document).ready(function(){
 			for ( tokenRound = 1; tokenRound <= maxFamily; tokenRound++ ) {
 	
 				for ( j = 0; j < numberofPlayers; j++ ) {
-//					console.log('k: ' + k);
 					if ( activePlayers[k][2] < tokenRound ) {
 						//console.log( activePlayers[k][0] + " is out of tokens: " + activePlayers[k][2] )
 					} else {
@@ -499,6 +543,16 @@ $(document).ready(function(){
 		$('.plus2 .inventory').stockInventory(2);
 		$('.plus3 .inventory').stockInventory(3);
 		$('.plus4 .inventory').stockInventory(4);
+
+		$('.keep1 .inventory').stockInventory(1);
+		$('.keep2 .inventory').stockInventory(2);
+		$('.keep3 .inventory').stockInventory(3);
+		$('.keep4 .inventory').stockInventory(4);
+
+		$('.action').removeClass('keep1');
+		$('.action').removeClass('keep2');
+		$('.action').removeClass('keep3');
+		$('.action').removeClass('keep4');
 
 		updateRound(currentRound);
 
@@ -621,7 +675,7 @@ $(document).ready(function(){
 				function populateCards() {
 					// Populate Players
 					for ( i = 0; i < activePlayers.length; i++) {
-						$('.cardsplayer').find('ul').append('<li class="' + activePlayers[i][1] + '"><span><span>' + activePlayers[i][0] + '</span></span></li>');
+						$('.cardsplayer').find('ul').append('<li class="' + activePlayers[i][1] + '" title="' + activePlayers[i][1] + '"><span><span>' + activePlayers[i][0] + '</span></span></li>');
 					}
 					
 					// Populate Cards
@@ -641,7 +695,7 @@ $(document).ready(function(){
 
 					for (var i = 0; i < improvementsDeck.improvements.length; i++) {
 						mytitle = $("#card" + improvementsDeck.improvements[i]).attr('title')
-						$('.modalcards').append('<a title="' + improvementsDeck.occupations[i] + '" id="cardbutton' + improvementsDeck.improvements[i] + '" class="card">' + mytitle + '</a>');
+						$('.modalcards').append('<a title="' + improvementsDeck.improvements[i] + '" id="cardbutton' + improvementsDeck.improvements[i] + '" class="card">' + mytitle + '</a>');
 					}
 				}
 
@@ -720,23 +774,411 @@ $(document).ready(function(){
 	}
 
 
-	function playImprovemntCard( thecardwereadding ) {
+	function playImprovementCard( thecardwereadding, theaffectedplayer ) {
+		console.log('this will affect ' + theaffectedplayer);
 		console.log("this will add " + thecardwereadding );
+
+		function addActionCard(card,playername) {
+			card.changeAvailability('available');
+			card.find('strong').html(playername);
+			$('.content').prepend(card).masonry( 'appended', card );
+		}
+
+		// CARDS
+
+		function storyteller() {
+			// card 45
+			console.log("this will add storyteller" );
+			activePlayers[theaffectedplayer][4].push(45);
+		}
+
+		function mushroomcollector() {
+			// card 46
+			console.log("this will add mushroomcollector" );
+
+		 	var playername = activePlayers[theaffectedplayer][0];
+			console.log('this affects ' + playername);
+			activePlayers[theaffectedplayer][4].push(46);
+		}
+
+		function masterforester() {
+			// card 47
+			console.log("this will add masterforester" );
+			activePlayers[theaffectedplayer][4].push(47);			
+
+			var card = $('#card47');
+		 	var playername = activePlayers[theaffectedplayer][0];
+			addActionCard( card, playername);
+			$('#card47 .inventory li').remove();
+		}
+
+		function headofthefamily() {
+			// card 48
+			console.log("this will add headofthefamily" );
+			activePlayers[theaffectedplayer][4].push(48);			
+			var card = $('#card48');
+		 	var playername = activePlayers[theaffectedplayer][0];
+			addActionCard( card, playername);
+		}
+
+		function basket() {
+			// card 49
+			console.log("this will add basket" );
+			activePlayers[theaffectedplayer][4].push(49);			
+		}
+
+		function pigcatcher() {
+			// card 50
+			console.log("this will add pigcatcher" );
+			activePlayers[theaffectedplayer][4].push(50);			
+		}
+
+		function guest() {
+			// card 51
+			console.log("this will add Guest" );
+			// activePlayers[theaffectedplayer][4].push(51); Do not hold this card
+			doGuest(activePlayers[theaffectedplayer]);
+		}
+
+		function lasso() {
+			// card 52
+			console.log("this will add Lasso" );
+			activePlayers[theaffectedplayer][4].push(52);
+		}
+
+		function claydigger() {
+			// card 55
+			console.log("this will add Clay Digger" );
+			activePlayers[theaffectedplayer][4].push(55);			
+
+			var card = $('#card55');
+		 	var playername = activePlayers[theaffectedplayer][0];
+			addActionCard( card, playername);
+			$('#card55 .inventory').append('<li><span>Item</span></li>');
+			$('#card55 .inventory').append('<li><span>Item</span></li>');
+		}
 		
+		function claydeposit() {
+			// card 56
+			console.log("this will add Clay Deposit" );
+			activePlayers[theaffectedplayer][4].push(56);			
+
+			var card = $('#card56');
+		 	var playername = activePlayers[theaffectedplayer][0];
+			addActionCard( card, playername);
+
+		}
+
+		function tavern() {
+			// card 57
+			console.log("this will add Tavern" );
+			activePlayers[theaffectedplayer][4].push(57);			
+
+			var card = $('#card57');
+		 	var playername = activePlayers[theaffectedplayer][0];
+			addActionCard( card, playername);
+
+		}
+
+
+		function lover() {
+			// card 58
+			console.log("this will add Lover" );
+			activePlayers[theaffectedplayer][4].push(58);			
+
+			var growingFamily = activePlayers[theaffectedplayer];
+			doFamilyGrowth(growingFamily);
+
+		}
+
+		function reedhut() {
+			// card 59
+			console.log("this will add Reed Hut" );
+			activePlayers[theaffectedplayer][4].push(59);			
+
+			var growingFamily = activePlayers[theaffectedplayer];
+			doFamilyGrowth(growingFamily);
+			doGuest(activePlayers[theaffectedplayer]);
+		}
+
+		function adoptiveparents() {
+			// card 60
+			console.log("this will add Adoptive Parents" );
+			activePlayers[theaffectedplayer][4].push(60);			
+		}
+
+		function wetnurse() {
+			// card 61
+			console.log("this will add Wet Nurse" );
+			activePlayers[theaffectedplayer][4].push(61);			
+		}
+
+		function sleepingcorner() {
+			// card 63
+			console.log("this will add Sleeping Corner" );
+			activePlayers[theaffectedplayer][4].push(63);			
+
+			var card = $('#card63');
+		 	var playername = activePlayers[theaffectedplayer][0];
+			addActionCard( card, playername);
+
+		}
+
+
+
+
+		if ( thecardwereadding == 45  ) storyteller();
+		if ( thecardwereadding == 46 ) mushroomcollector(); 
+		if ( thecardwereadding == 47 ) masterforester();
+		if ( thecardwereadding == 48 ) headofthefamily();
+		if ( thecardwereadding == 49 ) basket();
+		if ( thecardwereadding == 50 ) pigcatcher();
+		if ( thecardwereadding == 51 ) guest();
+		if ( thecardwereadding == 52 ) lasso();
+		if ( thecardwereadding == 55 ) claydigger();
+		if ( thecardwereadding == 56 ) claydeposit();
+		if ( thecardwereadding == 57 ) tavern();
+		if ( thecardwereadding == 58 ) lover();
+		if ( thecardwereadding == 59 ) reedhut();
+		if ( thecardwereadding == 60 ) adoptiveparents();
+		if ( thecardwereadding == 61 ) wetnurse();
+		if ( thecardwereadding == 63 ) sleepingcorner();
+
+
+			
 	}
 
+	function returnCurrentPlayer() {
+		var currentToken = currentTurn - 1;			
+		console.log('currentToken is ' + currentToken);
+		return turns[currentToken];
+	}
 
+	
 	// jQuery Clicks
 
 	$('.action').click(function() {
 
+		var currentPlayer = returnCurrentPlayer();
+		console.log("the currentPlayer is " + currentPlayer[0]);
+
+		var numberofcards = currentPlayer[4].length;
+		console.log("the currentPlayer has this many cards: " + numberofcards );
+		
+		for (var i = 0; i < currentPlayer[4].length; i++) {
+			console.log("card: " + currentPlayer[4][i] );
+		}
+
+
+
 		if ( $(this).hasClass('available') ) {
 
-			if ( $(this).hasClass('startingplayer') ) {
-				changeStartingPlayer();			
-			} else if ( $(this).hasClass('familygrowth') ) {
-				console.log('family growth clicked');
-				familyGrowth();
+			// card 45, storyteller
+			if ( jQuery.inArray(45, currentPlayer[4] ) > -1 ) {
+				console.log('player has soryteller');
+
+				if ( $(this).is('#card16') || $(this).is('#card36') ) {
+					console.log('soryteller is an option here');
+
+					var answer = confirm('Do you want to leave 1 Food and receive 1 Vegetable in exchange?')
+
+					if (answer) {
+						console.log('they took the veg!')
+						$(this).addClass('keep1');
+					} else {
+						console.log('what, no oven?');
+					}
+					
+				}
+			
+			}
+
+
+			// card 46, Mushroom Collector
+			if ( jQuery.inArray(46, currentPlayer[4] ) > -1 ) {
+
+				console.log('player has Mushroom Collector');
+				
+				if ( $(this).hasClass('wood') || $(this).is('#card31') || $(this).is('#card34') || $(this).is('#card37') || $(this).is('#card41') || $(this).is('#card42') ) {
+
+					console.log('Mushroom Collector is an option here');
+
+					var answer = confirm('Do you want to leave 1 Wood and receive 2 Food in exchange?')
+
+					if (answer) {
+						console.log('they took the wood!')
+						if ( $(this).hasClass('wood') ) $(this).addClass('keep1');
+					} else {
+						console.log('didnt take');
+					}
+					
+				}
+		
+			}
+
+
+			// card 49, Basket
+			if ( jQuery.inArray(49, currentPlayer[4] ) > -1 ) {
+
+				console.log('player has Basket');
+				
+				if ( $(this).hasClass('wood') && $(this).find('li').length > 1 ) var hasthewood = true;
+				
+				if ( hasthewood || $(this).is('#card31') || $(this).is('#card41') ) {
+
+					console.log('Basket is an option here');
+
+					var answer = confirm('Do you want to leave 2 Wood and receive 3 Food in exchange?')
+
+					if (answer) {
+						console.log('they took the wood!')
+						if ( $(this).hasClass('wood') ) $(this).addClass('keep2');
+					} else {
+						console.log('didnt take');
+					}
+					
+				}
+		
+			}
+
+
+			// card 50, Pig Catcher
+			if ( jQuery.inArray(50, currentPlayer[4] ) > -1 ) {
+
+				console.log('player has Pig Catcher');
+				
+				if ( $(this).hasClass('wood') && $(this).find('li').length > 1 ) var hasthewood = true;
+				
+				if ( hasthewood || $(this).is('#card31') || $(this).is('#card41') ) {
+
+					console.log('Pig Catcher is an option here');
+
+					var answer = confirm('Do you want to leave 2 Wood and receive a Wild Boar in exchange?');
+
+					if (answer) {
+						console.log('they took the wood!');
+						if ( $(this).hasClass('wood') ) $(this).addClass('keep2');
+					} else {
+						console.log('didnt take');
+					}
+					
+				}
+		
+			}
+
+			// card 52, Lasso
+			if ( jQuery.inArray(52, currentPlayer[4] ) > -1 ) {
+
+				console.log('player has Lasso');
+				
+				if ( $(this).hasClass('animal') ) {
+
+					console.log('Lasso is an option here');
+
+					var eligibleTokens = false;
+					var currentIndex = $('.moves li.current').index();
+					console.log('current index: ' + currentIndex);
+
+					$('.moves li').each(function(index) {
+						if  ( $(this).hasClass(currentPlayer[1]) ) {
+							if ( index > currentIndex ) {
+								eligibleTokens = true;
+							}
+						}
+					});
+
+					if (eligibleTokens == true) {
+						$('.moves .' + currentPlayer[1]).last().insertAfter('.moves li:eq(' + currentIndex + ')');
+						alert('Lasso: You took an animal, so go again.');						
+					}
+
+				}
+		
+			}
+
+
+
+			// card 61, Wet Nurse
+			if ( jQuery.inArray(61, currentPlayer[4] ) > -1 ) {
+
+				console.log('player has Wet Nurse');
+				
+				if ( $(this).hasClass('build') ) {
+
+					console.log('Wet Nurse is an option here');
+
+					doWetNurse();
+					
+				}
+		
+			}
+
+
+			if ( $(this).hasClass('startingplayer') ) changeStartingPlayer();			
+
+			if ( $(this).hasClass('familygrowth') ) {
+
+
+				if ( $(this).is('#card48') ) {
+					// card 48, Head of the Family
+					if ( jQuery.inArray(48, currentPlayer[4] ) > -1 ) {
+
+						var answer = confirm('Click "OK" to Family Growth.');
+
+						if (answer) familyGrowth();
+				
+					} else {
+						alert("That isn't your card. Please undo.");
+					}
+
+				} else if ( jQuery.inArray(59, currentPlayer[4] ) > -1 ) {
+				// card 59, Reed Hut
+				
+					var newanswer = confirm('Click "OK" to move a family member from your Reed Hut into your home. (Click "Cancel" if you want to family growth.)');
+
+					if (newanswer) {
+						var idx = currentPlayer[4].indexOf(59); // Find the index
+						currentPlayer[4].remove(idx);
+					}
+
+					var answer = confirm('Click "OK" to Family Growth.');
+
+					if (answer) familyGrowth();
+
+				} else if ( jQuery.inArray(60, currentPlayer[4] ) > -1 ) {
+				// card 60, Adoptive Parents
+
+					familyGrowth();
+					
+					var answer = confirm('Adoptive Parents: Click "OK" to pay 1 Food to use this offspring this round.');
+
+					if (answer) {
+						console.log('currentPlayer: ' + currentPlayer);
+						doGuest(currentPlayer);
+						currentPlayer[3]--;
+					}
+
+
+				} else if ( $(this).is('#card63') ) {
+					// card 63, Sleeping Corner
+					if ( jQuery.inArray(63, currentPlayer[4] ) > -1 ) {
+
+						familyGrowth();
+					
+					} else {
+						alert("That isn't your card. Please undo.");
+					}
+
+				} else if ( $(this).is('#card39') || $(this).is('#card41') ) {
+					if ( currentRound > 4) {
+						var answer = confirm('Click "OK" to Family Growth.');
+						if (answer) familyGrowth();						
+					}
+				} else {
+									
+					familyGrowth();
+				}
+				
 			}
 
 			$(this).makeUndoable();
@@ -780,7 +1222,6 @@ $(document).ready(function(){
 
 	$('.popup').find('.cancel').click(function() {
 		$(this).parents('.popup').hide();
-//		console.log('got the cancel click');
 	});
 	
 	$('.cardsplayer ul').delegate("span", "click", function() {
@@ -789,17 +1230,15 @@ $(document).ready(function(){
 	});
 
 	$('#cardswindow').delegate("a", "click", function() {
-		$(this).hide();
+
 		$(this).parents('.popup').hide();
 		
-
 		var thecardwereadding = $(this).attr('title');
-		console.log('thecardwereadding is ' + thecardwereadding);
-		playImprovemntCard(thecardwereadding);
+		var theaffectedplayer = $('.cardsplayer ul li.selected').index();
+		playImprovementCard(thecardwereadding,theaffectedplayer);
 
-	});
 
-	
+	});	
 		
 	// Let's go!
 

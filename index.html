@@ -14,19 +14,6 @@
 	<script type="text/javascript" src="iscroll.js"></script>
 	<script type="text/javascript" src="farmgame.js"></script>
 
-	<script type="text/javascript">
-
-	  var _gaq = _gaq || [];
-	  _gaq.push(['_setAccount', 'UA-1159893-3']);
-	  _gaq.push(['_trackPageview']);
-
-	  (function() {
-	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	  })();
-
-	</script>
 
 </head>
 
@@ -130,7 +117,7 @@
 
 <div class="storage">
 
-	<div id="card01" class="action constant">Build Room(s) <em>and / or</em> Build Stable(s) <span>2 Wood per Stable</span></div>
+	<div id="card01" class="action constant build">Build Room(s) <em>and / or</em> Build Stable(s) <span>2 Wood per Stable</span></div>
 	<div id="card02" class="action constant startingplayer">Starting Player <em>and / or</em> 1 Minor Improvement</div>
 	<div id="card03" class="action constant">Take 1 Grain <span>and place it in your personal supply</span></div>
 	<div id="card04" class="action constant">Plow 1 Field</div>
@@ -148,15 +135,15 @@
 	<div id="card16" class="action constant plus1 food">Traveling Players <span>+1 Food</span></div>
 	<div id="card17" class="action round">1 Major or Minor Improvement</div>
 	<div id="card18" class="action round">Sow <em>and / or</em> Bake Bread</div>
-	<div id="card19" class="action round plus1 sheep">+1 Sheep</div>
+	<div id="card19" class="action round plus1 sheep animal">+1 Sheep</div>
 	<div id="card20" class="action round">Fences <span>1 Wood per Fence</span></div>
 	<div id="card21" class="action round"><span>After</span> Renovation <span>also</span> 1 Major or Minor Improvement</div>
 	<div id="card22" class="action round familygrowth"><span>After</span> Family growth <span>also</span> 1 Minor Improvement</div>
 	<div id="card23" class="action round plus1 stone">+1 Stone</div>
 	<div id="card24" class="action round">Take 1 Vegetable</div>
-	<div id="card25" class="action round plus1 boar">+1 Wild Boar</div>
+	<div id="card25" class="action round plus1 boar animal">+1 Wild Boar</div>
 	<div id="card26" class="action round plus1 stone">+1 Stone</div>
-	<div id="card27" class="action round plus1 cattle">+1 Cattle</div>
+	<div id="card27" class="action round plus1 cattle animal">+1 Cattle</div>
 	<div id="card28" class="action round familygrowth">Family growth <span>even without space in your home</span></div>	
 	<div id="card29" class="action round">Plow <em>and / or</em> Sow</div>
 	<div id="card30" class="action round"><span>After</span> Renovation <span>also</span> Fences <span>1 Wood per Fence</span></div>
@@ -166,11 +153,11 @@
 	<div id="card33" class="action">Build Stable <span>Build up to 1 Stable for 1 wood <em>and/or</em></span> Bake bread</div>
 	<div id="card34" class="action">Day Laborer <span>Take 1 Food and 1 Building resource (Wood/Clay/Reed/Stone) and place them in your personal supply.</div>
 	<div id="card35" class="action plus4 wood">+4 Wood</div>
-	<div id="card36" class="action plus1 food">Build 1 Room <em>or</em> Traveling Players <span>+1 Food</span></div>
+	<div id="card36" class="action plus1 food build">Build 1 Room <em>or</em> Traveling Players <span>+1 Food</span></div>
 	<div id="card37" class="action plus1 reed">+1 Reed <em>In Addition</em> take 1 Stone and 1 Wood <span>and place them in your personal supply</span></div>
 	<div id="card38" class="action plus3 clay">+3 Clay</div>
 	<div id="card39" class="action familygrowth"><em>Either</em> 1 Occupation <span>(A player&rsquo;s first and second Occupations cost 1 Food each, each additional Occupation costs 2 Food)</span> <em>Or, from Round 5,</em> Family Growth</div>
-	<div id="card40" class="action">Take 1 sheep and 1 food <em>Or</em> Take 1 Wild boar <em>Or</em> Pay 1 Food for 1 Cattle</div>
+	<div id="card40" class="action animal">Take 1 sheep and 1 food <em>Or</em> Take 1 Wild boar <em>Or</em> Pay 1 Food for 1 Cattle</div>
 	<div id="card41" class="action familygrowth"><span>Take 2 different</span> Building Resources <span>of your choice and place them in your personal supply</span> <em>Or, from Round 5,</em> Family growth</div>
 	<div id="card42" class="action"><span>Take 1</span> Building Resource <span>of your choice and place it in your personal supply</span></div>
 	<div id="card43" class="action plus1 clay">+1 Clay</div>
@@ -180,7 +167,7 @@
 
 	<div id="card45" class="occupation" title="Storyteller">
 	Storyteller
-	<!-- Whenever you use the "Traveling Players" action on an Action Space, you can leave 1 Food on the space and take 1 Vegetable instead. (notes: see Basket) -->
+	<!--  Whenever you use the "Traveling Players" action on an Action Space, you can leave 1 Food on the space and take 1 Vegetable instead. (notes: see Basket) -->
 	</div>
 
 	<div id="card46" class="occupation" title="Mushroom Collector">
@@ -188,19 +175,21 @@
 	<!-- Whenever you use a Family member's action to take Wood from an Action space, you can leave 1 of the Wood on the space and take 2 Food in exchange.  (notes:  see Basket) -->
 	</div>
 
-	<div id="card47" class="occupation" title="Master Forester">
-	Master Forester
+	<div id="card47" class="occupation action plus2 wood" title="Master Forester">
+	+2 Wood
+	<span>Pay <strong>Player</strong> 2 Food</span>
 	<!-- Include the "2 Wood" Action card from the 3-player game as an additional forest.  At the start of each round, place 2 Wood on the card.  Any player who uses this action must pay you 2 Food.  (notes: Create new Action Space, "Red's Master Forester +2 Wood (must pay Red 2 Food to take this Wood)" -->
 	</div>
 
-	<div id="card48" class="occupation" title="Head of the Family">
-	Head of the Family
+	<div id="card48" class="occupation action familygrowth build" title="Head of the Family">
+	<strong>Player</strong>&rsquo;s Head of the Family
+	<span>Family Growth or Build Rooms / Stables</span>
 	<!-- You can use any Build room(s) or Family Growth Action space, even if another player has already placed a person on it. (Notes:  Create new action space, "Red's Head of the Family - Red may build room(s) or use Family Growth."  Create dialog that asks "Red - Do you want to take a Family Growth Action?".) -->
 	</div>
 
 	<div id="card49" class="improvement" title="Basket">
 	Basket
-	<!-- Whenever you use a person's action to take Wood from an Action space, you can leave 2 of the Wood on the Action space and receive 3 Food in exchange.  (notes: create dialog for any wood spaces for specific player, "Green - Do you want to leave 2 Wood and receive 3 Food in exchange?") -->
+	<!--  Done, pending test. Whenever you use a person's action to take Wood from an Action space, you can leave 2 of the Wood on the Action space and receive 3 Food in exchange.  (notes: create dialog for any wood spaces for specific player, "Green - Do you want to leave 2 Wood and receive 3 Food in exchange?") -->
 	</div>
 
 
@@ -208,61 +197,67 @@
 
 	<div id="card50" class="occupation" title="Pig Catcher">
 	Pig Catcher 
-	<!-- see Basket - Create dialog box to ask specific player "Do you want to leave 2 Wood and take a Wild Boar instead?" -->
+	<!-- See Basket - Create dialog box to ask specific player "Do you want to leave 2 Wood and take a Wild Boar instead?" -->
 	</div>
 
-	<div id="card51" class="improvement" title="Guest">
+	<div id="card51" class="improvement" title="(Guest)">
 	Guest
 	<!-- Receive a Guest token, which you may place once in the next round as you would a person (notes:  Do family growth for specific player, delete 1 family member after next turn) -->
+	<!-- Bug: Should apply to next turn, not this one -->
 	</div>
 	
-	<div id="card52" class="improvement" title="Lasso">
+	<div id="card52" class="improvement" title="(Lasso)">
 	Lasso 
 	<!-- You can place exactly 2 people immediately after one another, if at least one of them uses animal Action Space (notes:  When specific player uses animal space, create dialog box, "Do you want to place another family member immediately?"  If so, create an additional family member to use next, delete next regular family member.  Reset for next turn.) - LOW PRIORITY CARD - CAN FUNCTION WITHOUT IT. -->
 	</div>
 	
-	<div id="card53" class="occupation" title="Taster">
+	<div id="card53" class="occupation" title="(Taster)">
 	Taster
 	<!-- Whenever another player is Starting Player, you can pay 1 food at the start of the round and be the first to place a family member.  After that, play starts with the Starting Player as usual.  (Notes:  Once played, begin each turn with dialog box for Specific Player that asks "Do you want to pay starting player 1 food to be the first to place a family member?"  Alter family member order to put Specific player 1st) - LOW PRIORITY CARD - CAN FUNCTION WITHOUT IT. -->
 	</div>
 	
-	<div id="card54" class="occupation" title="Chamberlain">
+	<div id="card54" class="occupation" title="(Chamberlain)">
 	Chamberlain
 	<!-- At the start of Round 11, turn over Round cards for the remaining rounds.  You (and only you) can use these actions immediately; all other players must wait until the appropriate round.  (Notes:  In round 11 and following, when it is ____'s turn, show all remaining action spaces and allow ___ to use them.  Hide when not ___'s turn.) *****OR*****  (Create additional Action Space called "Red's Chaimberlain.  Create dialog box for Action Space when Red selects it that allows to pick an action from the following list:  [+1 Cattle] [+1 Stone] [Plow 1 Field and/or Sow] [Family Growth even without space in your home] [After renovation also Fences (1 Wood per fence)] -->
 	</div>
 	
 	<!-- *** Cards that require an additional action space: -->
 
-	<div id="card55" class="occupation" title="Clay Digger">
-	Clay Digger
+
+	<div id="card55" class="occupation action plus1 clay" title="(Clay Digger)">
+	+1 Clay
+	<span>Pay <strong>Player</strong> 3 Food.</span>
 	<!-- Create new +1 Clay action space.  Immediately add 3 Clay to Action Space.  Anyone using this space gets dialog box "Pay ____ 3 Food") -->
+	<!-- Bug: Is replenishing in background -->
 	</div>
 	
-	<div id="card56" class="improvement" title="Clay Deposit">
-	Clay Deposit
-	<!-- Create new "Clay Deposit" Action Space. "Take 5 Clay, pay ____ 1 Food.  ____ may take 2 Bonus Points instead of the Clay" -->
+	<div id="card56" class="improvement action" title="Clay Deposit">
+	Take 5 Clay
+	<span>Pay <strong>Player</strong> 1 Food. <strong>Player</strong> may take 2 Bonus Points instead of the Clay</span>
+	<!-- Create new "Clay Deposit" Action Space. -->
 	</div>
 	
-	<div id="card57" class="improvement" title="Tavern">
-	Tavern
-	<!-- Create new "Tavern" Action Space.  "Take 3 Food.  ____ may take 2 Bonus Points instead of the Food." -->
+	<div id="card57" class="improvement action" title="Tavern">
+	Take 3 Food <span><strong>Player</strong> may take 2 Bonus Points instead of the Food.</span>
+	<!-- Create new "Tavern" Action Space. -->
 	</div>
 
 	<!-- K DECK -->
 
 	<div id="card58" class="occupation" title="Lover">
 	Lover
-	<!-- When you play this card, immediately carry out a family growth without room.  Playing this card costs an additional 4 food. (Notes:  do 1 immediate regular family growth) -->
+	<!-- Done! When you play this card, immediately carry out a family growth without room.  Playing this card costs an additional 4 food. (Notes:  do 1 immediate regular family growth) -->
 	</div>
 	
 	<div id="card59" class="improvement" title="Reed Hut">
 	Reed Hut
-	<!-- Place 1 family member token that you have not yet brought into the game onto this card.  Can take actions starting from the round when you play this card, must be fed, but is not worth any points.  Can move into home with regular family growth. (Notes:  Take family growth immediately, allow specific player to use that family member this turn.  When using family growth Action Space afterwards, open dialog box and ask "Are you moving family member from reed hut into your home?"  If yes, do not increase family size, and stop asking question) -->
+	<!-- Done, pending test. Place 1 family member token that you have not yet brought into the game onto this card.  Can take actions starting from the round when you play this card, must be fed, but is not worth any points.  Can move into home with regular family growth. (Notes:  Take family growth immediately, allow specific player to use that family member this turn.  When using family growth Action Space afterwards, open dialog box and ask "Are you moving family member from reed hut into your home?"  If yes, do not increase family size, and stop asking question) -->
 	</div>
 	
-	<div id="card60" class="occupation" title="Adoptive Parents">
+	<div id="card60" class="occupation" title="(Adoptive Parents)">
 	Adoptive Parents
 	<!-- When you take family growth, you can pay 1 food to place this offspring in your hut.  This allows you to take an action with it this round.  If you do this, the offspring does not count as "newborn," i.e. this affects food needed at next harvest.  (Notes:  Do immediate family growth, ask if specific player wants to pay 1 food to use offspring immediately.  If so, alter food calculation algorithm.) -->
+	<!-- Is charging food even for baby not created due to max family -->
 	</div>
 	
 	<div id="card61" class="occupation" title="Wet Nurse">
@@ -270,15 +265,15 @@
 	<!-- Whenever you build rooms, you may grow your family by the number of rooms your built.  This costs 1 Food per person. (Notes:  Create dialog box for specific player when building room(s). "How many family members does Wet Nurse provide?  0, 1, 2, or 3?  This costs 1 food per person."  Do immediate family growth for the number selected, newborns take action next turn.) -->
 	</div>
 	
-	<div id="card62" class="occupation" title="Wood Distributor">
+	<div id="card62" class="occupation" title="(Wood Distributor)">
 	Wood Distributor 
 	<!-- Distribute evenly the Wood from the +3 Wood Action space onto neighboring Clay, Reed, and Fishing spaces. (Notes:  After replenishing, ask "___, Would you like to distribute Wood from +3 Wood Action Space?"  If yes, remove all wood from +3 Wood card.  Add pop-ups when taking +1 Clay, +1 Reed, and Fishing afterwards to remind to take additional wood.) -->
 	</div>
 	
 	<!-- Cards that require an additional action space: -->
 
-	<div id="card63" class="improvement" title="Sleeping Corner">
-	Sleeping Corner 
+	<div id="card63" class="improvement action familygrowth" title="Sleeping Corner">
+	<strong>Player</strong>&rsquo;s Sleeping Corner <span>Family Growth</span>
 	<!-- Create new Action space for specific player, Red's Sleeping Corner.  Works as additional family growth -->
 	</div>
 

@@ -70,9 +70,15 @@ body {font-family: sans-serif; font-size: 18px; margin: 0; padding: 0; backgroun
 
 
 
-#wrapper .available {background: #336633;  border: 1px solid #336633; cursor: pointer; color: white;  box-shadow: 1px 1px 3px rgba(0,0,0,0.6); -webkit-box-shadow: 1px 1px 3px rgba(0,0,0,0.6); text-shadow: 1px 1px 3px rgba(0,0,0,0.6);}
+#wrapper .available {background: #336633;  border: 1px solid #336633; cursor: pointer; color: white;  box-shadow: 1px 1px 3px rgba(0,0,0,0.6); text-shadow: 1px 1px 3px rgba(0,0,0,0.6);}
+
+#wrapper .improvement.available, #wrapper .occupation.available {background: #666600; border-color: #666600; }
+
+
 #wrapper .new {background: #339933; color: #fff; border: 1px solid #339933;}
 #wrapper .unavailable {background: transparent !important; color: #669966 !important;  border: 1px dashed #669966 !important; }
+
+
 
 .wood .inventory li { background: #666600; border-radius: .5em; border: 1px solid #666600; }
 .reed .inventory li { background: #fff; border-radius: .5em; border: 1px solid #fff; }
@@ -97,11 +103,11 @@ body {font-family: sans-serif; font-size: 18px; margin: 0; padding: 0; backgroun
 
 
 .popup {display: none; background: rgba(0,0,0,0.8);}
-.popup .shade {background: rgba(0,0,0,0.8); z-index: 10;}
-.popup .modal { background: #000; color: #fff; width: 400px; border: 6px solid #000; margin: auto; z-index: 11; -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; }
-.popup .modalheader { overflow: hidden; padding: .5em; clear: both;}
+.popup .shade {background: rgba(0,0,0,0.6); z-index: 10;}
+.popup .modal { background: #363; color: #fff; width: 400px; border: 3px solid #000; margin: auto; z-index: 11; border-radius: 8px; }
+.popup .modalheader { overflow: hidden; padding: .5em; clear: both; background: #000; display: none;}
 .popup .modalheader .cancel {float: right; border: 1px solid #993333; margin: 0; display: block; border-radius: 6px; padding: .5em .75em;  background: #993333; color: #000; cursor: pointer;}
-.popup h4 {font-weight: lighter; color: #ccc; margin: 1em .5em 0 .5em; font-size: 18px; clear: both;}
+.popup h4 {font-weight: lighter; color: #ccc; margin: .5em; font-size: 18px; clear: both;}
 
 #cardswindow ul {list-style: none; margin: 0; padding: .25em; float: left;}
 #cardswindow ul li {border: .2em solid #000; display: block;  float: left; background: #000; padding: .125em; margin: 0; border-radius: 1em;}
@@ -109,7 +115,9 @@ body {font-family: sans-serif; font-size: 18px; margin: 0; padding: 0; backgroun
 #cardswindow ul li span span {display: none;}
 #cardswindow ul li span:hover {cursor: pointer;}
 
-#cardswindow .cardsplayer {overflow: hidden;}
+#cardswindow .cardsplayer {overflow: hidden; background: #000;}
+#cardswindow .cardsplayer ul { padding: 0 .5em .5em .5em; }
+#cardswindow .modalcards {overflow: hidden; padding-bottom: .5em; box-shadow: inset 1px 1px 3px rgba(0,0,0,0.6);}
 
 #cardswindow ul li.selected {border-color: #ccc;}
 
@@ -119,7 +127,7 @@ body {font-family: sans-serif; font-size: 18px; margin: 0; padding: 0; backgroun
 #cardswindow ul li.purple span {background: #996699;}
 #cardswindow ul li.white span {background: #fff;}
 
-#cardswindow a.card {clear: both; -webkit-border-radius: 8px; -moz-border-radius: 8px; boder-radius: 8px; border: 1px solid #ffff99; background: #ffff99; color: #000; margin: .25em .5em; padding: .5em .5em; display: block;}
+#cardswindow a.card {clear: both; box-shadow: 1px 1px 3px rgba(0,0,0,0.6); border-radius: 8px; border: 1px solid #ffff99; background: #ffff99; color: #000; margin: .25em .5em; padding: .5em .5em; display: block;}
 #cardswindow a.card:hover {cursor: pointer;}
 
 /* Here there be conflicts */
@@ -128,7 +136,7 @@ body {font-family: sans-serif; font-size: 18px; margin: 0; padding: 0; backgroun
 
 #skipplayer.available { background: #393; border-color: #393; color: #000; cursor: pointer;}
 
-#cardsbutton {border: 1px solid #ffff99; float: right; margin: 0 .5em 0 0; display: none; border-radius: 6px; padding: .5em .75em;  background: #ffff99; color: #000; cursor: pointer;}
+#cardsbutton {border: 1px solid #ffff99; float: right; margin: 0 .5em 0 0; display: block; border-radius: 6px; padding: .5em .75em;  background: #ffff99; color: #000; cursor: pointer;}
 
 
 /* Welcome Screen*/
